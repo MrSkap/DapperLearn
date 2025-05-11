@@ -14,6 +14,9 @@ public class UnitOfWork : IUnitOfWork, IDisposable
         {
             {
                 typeof(IAnimalRepository), con => new AnimalRepository(con)
+            },
+            {
+                typeof(IAviaryRepository), con => new AviaryRepository(con)
             }
         };
 

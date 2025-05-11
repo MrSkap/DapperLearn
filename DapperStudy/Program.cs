@@ -13,7 +13,8 @@ builder.Services
     .AddSingleton<IUnitOfWorkFactory, UnitOfWorkFactory>(
         provider =>
             new UnitOfWorkFactory(provider.GetService<IConfiguration>()!.GetConnectionString("ServiceConnection")!))
-    .AddTransient<IAnimalService, AnimalService>();
+    .AddTransient<IAnimalService, AnimalService>()
+    .AddTransient<IAviaryService, AviaryService>();
 
 
 builder.Services.AddEndpointsApiExplorer();

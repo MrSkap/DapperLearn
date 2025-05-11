@@ -33,11 +33,12 @@ public class AnimalRepository : IAnimalRepository
     public async Task CreateAnimalAsync(Animal animal)
     {
         var insert = $@"INSERT INTO animals
-            (Id, Name, Age, Weight) VALUES
+            VALUES
             (@{nameof(Animal.Id)},
             @{nameof(Animal.Name)},
             @{nameof(Animal.Age)},
-            @{nameof(Animal.Weight)})";
+            @{nameof(Animal.Weight)},
+            @{nameof(Animal.AviaryId)})";
         await _connection.QueryAsync(insert, animal);
     }
 
@@ -48,6 +49,7 @@ public class AnimalRepository : IAnimalRepository
                 name = @{nameof(Animal.Name)},
                 age = @{nameof(Animal.Age)},
                 weight = @{nameof(Animal.Weight)}
+                aviaryId = @{nameof(Animal.AviaryId)}
             WHERE id = @{nameof(Animal.Id)}";
         await _connection.QueryAsync(query, animal);
     }

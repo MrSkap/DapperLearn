@@ -6,6 +6,13 @@ namespace DapperStudy.Application;
 
 public class AviaryService : IAviaryService
 {
+    private readonly IAnimalService _animalService;
+
+    public AviaryService(IAnimalService animalService)
+    {
+        _animalService = animalService;
+    }
+
     public async Task<IEnumerable<Aviary>> GetAviariesAsync(IUnitOfWork unitOfWork)
     {
         return await unitOfWork.GetRepository<IAviaryRepository>().GetAviariesAsync();
@@ -18,7 +25,17 @@ public class AviaryService : IAviaryService
 
     public async Task AddAviaryAsync(Aviary aviary, IUnitOfWork unitOfWork)
     {
-        await unitOfWork.GetRepository<IAviaryRepository>().AddAviaryAsync(aviary);
+        var aviaryRepository = unitOfWork.GetRepository<IAviaryRepository>();
+        var currentAviary = await aviaryRepository.GetAviaryAsync(aviary.Id);
+
+        if (currentAviary is null) await unitOfWork.GetRepository<IAviaryRepository>().AddAviaryAsync(aviary);
+
+        if (currentAviary?.Settings.Id != aviary.Settings.Id)
+            await unitOfWork.GetRepository<IAviaryRepository>().AddAviarySettingsAsync(aviary.Settings);
+
+        if (aviary.Animals != null)
+            foreach (var animal in aviary.Animals)
+                await _animalService.CreateAnimalAsync(animal, unitOfWork);
     }
 
     public async Task UpdateAviaryAsync(Aviary aviary, IUnitOfWork unitOfWork)

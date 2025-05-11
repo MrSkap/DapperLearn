@@ -44,6 +44,7 @@ public class AviaryController : ControllerBase
     {
         using var uow = _unitOfWorkFactory.Create();
         await _aviaryService.UpdateAviaryAsync(aviary, uow);
+        uow.Commit();
     }
 
     [HttpPut]
@@ -51,6 +52,7 @@ public class AviaryController : ControllerBase
     {
         using var uow = _unitOfWorkFactory.Create();
         await _aviaryService.AddAviaryAsync(aviary, uow);
+        uow.Commit();
     }
 
     [HttpGet("summaries")]
