@@ -32,7 +32,7 @@ public class AviaryRepository : IAviaryRepository
                 .QueryAsync<AviaryEntity, AviarySettingsEntity, AnimalEntity,
                     Tuple<AviaryEntity, AviarySettingsEntity, AnimalEntity>>(cmdTxt,
                     (aviary, setting, animal) =>
-                        Tuple.Create(aviary, (AviarySettingsEntity)setting, (AnimalEntity)animal),
+                        Tuple.Create(aviary, setting, (AnimalEntity)animal),
                     new { id }))
             .ToList();
 
@@ -90,21 +90,9 @@ public class AviaryRepository : IAviaryRepository
         throw new NotImplementedException();
     }
 
-    public async Task<List<AviarySummary>> GetAviarySummaryAsync(Guid id)
+    public async Task<List<AviarySummary>> GetAviarySummaryAsync()
     {
-        var query = @"
-            select 
-                [AviarySummary]
-            from aviaries
-                left join aviary_settings 
-                    on aviaries.SettingsId = aviary_settings.Id
-                left join 
-                    (select 
-                         aviaryId,
-                         count(*) as AnimalsCount
-                     from animals group by AviaryId) as animals
-                    on aviaries.Id = animals.aviaryId;";
-        var aviaries = await _connection.QueryAsync<AviarySummary>(query);
-        return aviaries.ToList();
+        var query = @"select * from aviary_summary_view";
+        return (await _connection.QueryAsync<AviarySummary>(query)).ToList();
     }
 }

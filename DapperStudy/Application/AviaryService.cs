@@ -48,8 +48,8 @@ public class AviaryService : IAviaryService
         await unitOfWork.GetRepository<IAviaryRepository>().DeleteAviaryAsync(id);
     }
 
-    public async Task<List<AviarySummary>> GetAviarySummariesAsync(Guid id, IUnitOfWork unitOfWork)
+    public async Task<List<AviarySummary>> GetAviarySummariesAsync(IUnitOfWork unitOfWork)
     {
-        return await unitOfWork.GetRepository<IAviaryRepository>().GetAviarySummaryAsync(id);
+        return await unitOfWork.GetRepository<IAviaryRepository>().GetAviarySummaryAsync();
     }
 }

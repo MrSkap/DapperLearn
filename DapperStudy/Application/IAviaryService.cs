@@ -10,5 +10,5 @@ public interface IAviaryService
     public Task AddAviaryAsync(Aviary aviary, IUnitOfWork unitOfWork);
     public Task UpdateAviaryAsync(Aviary aviary, IUnitOfWork unitOfWork);
     public Task DeleteAviaryAsync(Guid id, IUnitOfWork unitOfWork);
-    public Task<List<AviarySummary>> GetAviarySummariesAsync(Guid id, IUnitOfWork unitOfWork);
+    public Task<List<AviarySummary>> GetAviarySummariesAsync(IUnitOfWork unitOfWork);
 }

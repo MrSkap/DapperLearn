@@ -10,5 +10,5 @@ public interface IAviaryRepository
     Task AddAviarySettingsAsync(AviarySettings settings);
     Task UpdateAviaryAsync(Aviary aviary);
     Task DeleteAviaryAsync(Guid id);
-    Task<List<AviarySummary>> GetAviarySummaryAsync(Guid id);
+    Task<List<AviarySummary>> GetAviarySummaryAsync();
 }

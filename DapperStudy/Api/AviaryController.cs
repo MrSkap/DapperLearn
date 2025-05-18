@@ -56,9 +56,9 @@ public class AviaryController : ControllerBase
     }
 
     [HttpGet("summaries")]
-    public async Task<List<AviarySummary>> GetAviarySummaries(Guid id)
+    public async Task<List<AviarySummary>> GetAviarySummaries()
     {
         using var uow = _unitOfWorkFactory.Create();
-        return await _aviaryService.GetAviarySummariesAsync(id, uow);
+        return await _aviaryService.GetAviarySummariesAsync(uow);
     }
 }
