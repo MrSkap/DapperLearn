@@ -10,4 +10,5 @@ public interface IAnimalRepository
     Task CreateAnimalAsync(Animal animal);
     Task UpdateAnimalAsync(Animal animal);
     Task DeleteAnimalAsync(Guid animalId);
+    Task<AnimalLocation?> GetAnimalLocation(Guid animalId);
 }

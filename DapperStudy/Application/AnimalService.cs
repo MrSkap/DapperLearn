@@ -30,4 +30,9 @@ public class AnimalService : IAnimalService
     {
         await uow.GetRepository<IAnimalRepository>().DeleteAnimalAsync(animalId);
     }
+
+    public async Task<AnimalLocation?> GetAnimalLocationAsync(Guid id, IUnitOfWork uow)
+    {
+        return await uow.GetRepository<IAnimalRepository>().GetAnimalLocation(id);
+    }
 }

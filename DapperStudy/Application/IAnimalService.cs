@@ -10,4 +10,5 @@ public interface IAnimalService
     Task CreateAnimalAsync(Animal animal, IUnitOfWork uow);
     Task UpdateAnimalAsync(Animal animal, IUnitOfWork uow);
     Task DeleteAnimalAsync(Guid animalId, IUnitOfWork uow);
+    Task<AnimalLocation?> GetAnimalLocationAsync(Guid id, IUnitOfWork uow);
 }

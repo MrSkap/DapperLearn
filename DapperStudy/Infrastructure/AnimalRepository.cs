@@ -59,4 +59,27 @@ public class AnimalRepository : IAnimalRepository
         var query = @"DELETE from animals where id = @id";
         await _connection.ExecuteAsync(query, animalId);
     }
+
+    public async Task<AnimalLocation?> GetAnimalLocation(Guid animalId)
+    {
+        var query = @"
+            select * from animals where id = @id1;
+            select name from aviaries where id = (select ""aviaryId"" from animals where id = @id2);
+        ";
+
+        await using var multi = await _connection.QueryMultipleAsync(query, new {id1 = animalId, id2 = animalId});
+        var animal = await multi.ReadFirstAsync<Animal>();
+        var location = await multi.ReadFirstAsync<string>();
+        
+        if(animal is not null && location is not null)
+        {
+            return new AnimalLocation
+            {
+                Animal = animal,
+                AviaryName = location
+            };
+        }
+
+        return null;
+    }
 }
