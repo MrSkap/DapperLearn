@@ -36,23 +36,48 @@ public class AviaryController : ControllerBase
     public async Task DeleteAviaryAsync(Guid id)
     {
         using var uow = _unitOfWorkFactory.Create();
-        await _aviaryService.DeleteAviaryAsync(id, uow);
+        try
+        {
+            await _aviaryService.DeleteAviaryAsync(id, uow);
+            uow.Commit();
+        }
+        catch (Exception e)
+        {
+            uow.Rollback();
+            throw;
+        }
     }
 
     [HttpPatch]
     public async Task UpdateAviaryAsync(Aviary aviary)
     {
         using var uow = _unitOfWorkFactory.Create();
-        await _aviaryService.UpdateAviaryAsync(aviary, uow);
-        uow.Commit();
+        try
+        {
+            await _aviaryService.UpdateAviaryAsync(aviary, uow);
+            uow.Commit();
+        }
+        catch (Exception e)
+        {
+            uow.Rollback();
+            throw;
+        }
     }
 
     [HttpPut]
     public async Task CreateAviaryAsync(Aviary aviary)
     {
         using var uow = _unitOfWorkFactory.Create();
-        await _aviaryService.AddAviaryAsync(aviary, uow);
-        uow.Commit();
+        try
+        {
+            await _aviaryService.AddAviaryAsync(aviary, uow);
+            uow.Commit();
+        }
+        catch (Exception e)
+        {
+            uow.Rollback();
+            throw;
+        }
     }
 
     [HttpGet("summaries")]
