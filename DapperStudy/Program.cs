@@ -14,7 +14,8 @@ builder.Services
         provider =>
             new UnitOfWorkFactory(provider.GetService<IConfiguration>()!.GetConnectionString("ServiceConnection")!))
     .AddTransient<IAnimalService, AnimalService>()
-    .AddTransient<IAviaryService, AviaryService>();
+    .AddTransient<IAviaryService, AviaryService>()
+    .AddTransient<IStatisticService, StatisticService>();
 
 
 builder.Services.AddEndpointsApiExplorer();

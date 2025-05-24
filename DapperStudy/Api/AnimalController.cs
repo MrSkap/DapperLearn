@@ -31,7 +31,7 @@ public class AnimalController : ControllerBase
         using var uow = _unitOfWorkFactory.CreateNonTransactional();
         return await _animalService.GetAnimalByIdAsync(animalId, uow);
     }
-    
+
     [HttpGet("animal/{animalId}/location")]
     public async Task<AnimalLocation?> GetAnimalLocationAsync(Guid animalId)
     {

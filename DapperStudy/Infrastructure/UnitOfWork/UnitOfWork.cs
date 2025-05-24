@@ -17,6 +17,9 @@ public class UnitOfWork : IUnitOfWork, IDisposable
             },
             {
                 typeof(IAviaryRepository), con => new AviaryRepository(con)
+            },
+            {
+                typeof(IStatisticRepository), con => new StatisticRepository(con)
             }
         };
 

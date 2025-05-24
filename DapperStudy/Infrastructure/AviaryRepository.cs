@@ -32,7 +32,7 @@ public class AviaryRepository : IAviaryRepository
                 .QueryAsync<AviaryEntity, AviarySettingsEntity, AnimalEntity,
                     Tuple<AviaryEntity, AviarySettingsEntity, AnimalEntity>>(cmdTxt,
                     (aviary, setting, animal) =>
-                        Tuple.Create(aviary, setting, (AnimalEntity)animal),
+                        Tuple.Create(aviary, setting, animal),
                     new { id }))
             .ToList();
 
