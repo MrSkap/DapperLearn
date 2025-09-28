@@ -9,15 +9,24 @@
 
     <ItemGroup>
         <PackageReference Include="Dapper" Version="2.1.66"/>
+        <PackageReference Include="EntityFramework" Version="6.5.1"/>
         <PackageReference Include="FluentDbTools.Migration" Version="1.2.49"/>
         <PackageReference Include="FluentDbTools.Migration.Postgres" Version="1.2.49"/>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.20"/>
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.20"/>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.8"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.9">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4"/>
         <PackageReference Include="Serilog" Version="4.2.0"/>
         <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0"/>
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0"/>
     </ItemGroup>
 
     <ItemGroup>
+        <Folder Include="EFMigrations\"/>
         <Folder Include="Extensions\"/>
     </ItemGroup>
 
