@@ -3,26 +3,26 @@
 namespace DapperStudy.Application.Auth;
 
 /// <summary>
-/// Сервис аутентификации.
+///     Сервис аутентификации.
 /// </summary>
 public interface IAuthService
 {
     /// <summary>
-    /// Зарегестирировать нового пользователя.
+    ///     Зарегестирировать нового пользователя.
     /// </summary>
     /// <param name="request">Запрос на создание нового пользователя.</param>
     /// <returns>Токен.</returns>
     Task<string> Register(RegisterRequest request);
-    
+
     /// <summary>
-    /// Авторизовать.
+    ///     Авторизовать.
     /// </summary>
     /// <param name="request">Запрос на авторизацию.</param>
     /// <returns>Токен.</returns>
     Task<string?> Authenticate(LoginRequest request);
-    
+
     /// <summary>
-    /// Проверить сопадет ли хеш пароля с хешем хранимого пароля.
+    ///     Проверить сопадет ли хеш пароля с хешем хранимого пароля.
     /// </summary>
     /// <param name="password">Введенный пароль.</param>
     /// <param name="passwordHash">Хранимый хеш.</param>

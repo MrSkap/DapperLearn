@@ -15,7 +15,7 @@ public class AuthSetuper : IAuthSetuper
     {
         _adminConfiguration = adminConfiguration;
     }
-    
+
     /// <inheritdoc />
     public async Task SeedDataAsync(AuthDbContext context)
     {

@@ -1,3 +1,4 @@
+using DapperStudy.Api.Filters;
 using DapperStudy.Application;
 using DapperStudy.Infrastructure.UnitOfWork;
 using DapperStudy.Models;
@@ -7,6 +8,7 @@ namespace DapperStudy.Api;
 
 [ApiController]
 [Route("api")]
+[ServiceFilter(typeof(BadResponseFilter))]
 public class AnimalController : ControllerBase
 {
     private readonly IAnimalService _animalService;

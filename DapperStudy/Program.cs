@@ -1,4 +1,5 @@
 using System.Text;
+using DapperStudy.Api.Middlewares;
 using DapperStudy.Application;
 using DapperStudy.Application.Auth;
 using DapperStudy.Configuration;
@@ -72,6 +73,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 builder.Services.AddAuthorization();
 
+// builder.Services.AddTransient<RequestLoggerMiddleware>();
+
+
 var app = builder.Build();
 
 // EF миграция базы данных
@@ -104,6 +108,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<RequestLoggerMiddleware>();
 
 app.MapDefaultControllerRoute();
 

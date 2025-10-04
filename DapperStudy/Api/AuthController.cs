@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using DapperStudy.Api.Filters;
 using DapperStudy.Application.Auth;
 using DapperStudy.Infrastructure.Auth;
 using DapperStudy.Models.Models;
@@ -10,6 +11,7 @@ namespace DapperStudy.Api;
 
 [ApiController]
 [Route("api/auth")]
+[ServiceFilter(typeof(BadResponseFilter))]
 public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
@@ -64,15 +66,16 @@ public class AuthController : ControllerBase
         var role = User.FindFirst(ClaimTypes.Role)?.Value;
 
         return new ProfileResponse(
-            UserId: userId,
-            Username: username,
-            Email: email,
-            Role: role
+            userId,
+            username,
+            email,
+            role
         );
     }
 
     [Authorize(Roles = KnownRoles.Admin)]
     [HttpGet]
+    [ServiceFilter(typeof(AdminFilter))]
     public async Task<IEnumerable<UserResponse>?> GetAllUsers()
     {
         var users = await _userRepository.GetAllUsersAsync();
@@ -90,6 +93,7 @@ public class AuthController : ControllerBase
 
     [Authorize(Roles = KnownRoles.Admin)]
     [HttpPost("{userId:guid}/roles")]
+    [ServiceFilter(typeof(AdminFilter))]
     public async Task<IActionResult> AssignRoles(Guid userId, [FromBody] List<string> roles)
     {
         await _userRepository.AssignRolesToUserAsync(userId, roles);

@@ -1,4 +1,5 @@
-﻿using DapperStudy.Application;
+﻿using DapperStudy.Api.Filters;
+using DapperStudy.Application;
 using DapperStudy.Infrastructure.UnitOfWork;
 using DapperStudy.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +8,7 @@ namespace DapperStudy.Api;
 
 [ApiController]
 [Route("api/stat")]
+[ServiceFilter(typeof(BadResponseFilter))]
 public class StatisticsController : ControllerBase
 {
     private readonly IStatisticService _statisticService;
