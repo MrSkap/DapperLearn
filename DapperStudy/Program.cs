@@ -3,6 +3,7 @@ using DapperStudy.Api.Middlewares;
 using DapperStudy.Application;
 using DapperStudy.Application.Auth;
 using DapperStudy.Configuration;
+using DapperStudy.Hubs;
 using DapperStudy.Infrastructure.Auth;
 using DapperStudy.Infrastructure.Auth.Migrator;
 using DapperStudy.Infrastructure.Auth.Migrator.AuthSetup;
@@ -73,7 +74,19 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 builder.Services.AddAuthorization();
 
-// builder.Services.AddTransient<RequestLoggerMiddleware>();
+
+builder.Services.AddSignalR();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy", policy =>
+    {
+        policy.WithOrigins("http://localhost:4200") // URL вашего фронтенда
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+    });
+});
 
 
 var app = builder.Build();
@@ -100,6 +113,7 @@ using (var scope = app.Services.CreateScope())
     await setuper.SeedDataAsync(context);
 }
 
+app.UseCors("CorsPolicy");
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -112,6 +126,7 @@ if (app.Environment.IsDevelopment())
 app.UseMiddleware<RequestLoggerMiddleware>();
 
 app.MapDefaultControllerRoute();
+app.MapHub<SupportHub>("/supportHub");
 
 // Dapper миграция базы данных
 MigrationsRunner.RunMigrations(builder.Configuration);

@@ -26,6 +26,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Folder Include="Application\Support\" />
         <Folder Include="EFMigrations\"/>
         <Folder Include="Extensions\"/>
     </ItemGroup>
