@@ -1,9 +1,11 @@
 ﻿using System.Collections.Concurrent;
 using DapperStudy.Models.Support;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 
 namespace DapperStudy.Hubs;
 
+[Authorize]
 public class SupportHub: Hub
 {
      private static readonly ConcurrentDictionary<string, UserConnection> Connections = 
@@ -32,26 +34,32 @@ public class SupportHub: Hub
         await base.OnDisconnectedAsync(exception);
     }
 
-    public async Task RegisterUser(string userId, string userName, bool isSupportAgent = false)
+    public async Task RegisterUser(string? userId = null, string? userName = null, bool? isSupportAgent = null)
     {
+        var claimsPrincipal = Context.User;
+        var resolvedUserId = userId ?? claimsPrincipal?.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? Context.ConnectionId;
+        var resolvedUserName = userName ?? claimsPrincipal?.Identity?.Name ?? "visitor";
+        var isManagerRole = claimsPrincipal?.IsInRole("Manager") == true || claimsPrincipal?.IsInRole("manager") == true;
+        var resolvedIsSupport = isSupportAgent ?? isManagerRole;
+
         var userConnection = new UserConnection
         {
-            UserId = userId,
-            UserName = userName,
+            UserId = resolvedUserId,
+            UserName = resolvedUserName,
             ConnectionId = Context.ConnectionId,
-            IsSupportAgent = isSupportAgent
+            IsSupportAgent = resolvedIsSupport
         };
 
         Connections[Context.ConnectionId] = userConnection;
 
-        if (isSupportAgent)
+        if (resolvedIsSupport)
         {
-            SupportRooms[userId] = new List<string>();
-            await Clients.All.SendAsync("SupportAgentConnected", new { userId, userName });
+            SupportRooms[resolvedUserId] = new List<string>();
+            await Clients.All.SendAsync("SupportAgentConnected", new { userId = resolvedUserId, userName = resolvedUserName });
         }
         else
         {
-            await Clients.All.SendAsync("UserConnected", new { userId, userName });
+            await Clients.All.SendAsync("UserConnected", new { userId = resolvedUserId, userName = resolvedUserName });
         }
     }
 
@@ -107,8 +115,8 @@ public class SupportHub: Hub
         if (!Connections.TryGetValue(Context.ConnectionId, out var supportAgent) || !supportAgent.IsSupportAgent)
             return;
 
-        if (SupportRooms.ContainsKey(supportAgent.UserId))
-            SupportRooms[supportAgent.UserId].Remove(clientUserId);
+        if (SupportRooms.TryGetValue(supportAgent.UserId, out var room))
+            room.Remove(clientUserId);
 
         await Groups.RemoveFromGroupAsync(Context.ConnectionId, $"support_{clientUserId}");
     }

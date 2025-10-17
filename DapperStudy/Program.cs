@@ -1,4 +1,5 @@
 using System.Text;
+using DapperStudy.Api.Filters;
 using DapperStudy.Api.Middlewares;
 using DapperStudy.Application;
 using DapperStudy.Application.Auth;
@@ -31,8 +32,9 @@ builder.Services
     .AddScoped<IAuthService, AuthService>()
     .AddScoped<IJwtService, JwtService>()
     .AddScoped<IDbMigrator, EfDbMigrator>()
-    .AddScoped<IAuthSetuper, AuthSetuper>();
-
+    .AddScoped<IAuthSetuper, AuthSetuper>()
+    .AddScoped<AdminFilter>()
+    .AddScoped<BadResponseFilter>();
 var authConnectionString = builder.Configuration.GetConnectionString("AuthConnection");
 
 builder.Services.AddDbContext<AuthDbContext>(options =>
@@ -104,7 +106,6 @@ using (var scope = app.Services.CreateScope())
     {
         var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
         logger.LogError(ex, "An error occurred during migration");
-        throw;
     }
 
     var context = scope.ServiceProvider.GetRequiredService<AuthDbContext>();

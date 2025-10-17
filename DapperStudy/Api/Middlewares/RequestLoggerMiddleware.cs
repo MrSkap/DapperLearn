@@ -138,7 +138,7 @@ public class RequestLoggerMiddleware
 
     private void HandleExceptionAsync(HttpContext context, Exception exception, long duration)
     {
-        Log.Verbose(exception, """
+        Log.Error(exception, """
                                Request failed:
                                Method: {Method}
                                Path: {Path}

@@ -5,3 +5,6 @@
 
 ## Middleware и Filter
 Примеры см. `/Api/Filters` и `/Api/Middlewares`
+
+## SignalR
+Пример работы см. `/Hubs`
